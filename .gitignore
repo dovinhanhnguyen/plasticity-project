@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Geany project file
+*.geany
+
+# Large folders
+post/
+restart/
