@@ -35,3 +35,16 @@ xlabel('Shear Distance (m)');
 ylabel('Number');
 legend("Broken", "Born");
 print("../number_of_broken_born_contacts.png");
+
+contact_data2 = csvread("../raw_data/contact_data2.csv");
+figure;
+hold on;
+grid on;
+xlim([min(contact_data2(:,1)) max(contact_data2(:,1))]); % xlim
+xlim("manual"); % fix xlim
+plot(contact_data2(:,1),contact_data2(:,2),'r',contact_data2(:,1),contact_data2(:,3),'b'); % plot all rows of column 1 against all rows of column 2 in red, against all rows of column 3 in blue
+title('Broken Contacts and Born Contacts between successive timesteps against Shear Distance');
+xlabel('Shear Distance (m)');
+ylabel('Number');
+legend("Broken", "Born");
+print("../number_of_broken_born_contacts2.png");

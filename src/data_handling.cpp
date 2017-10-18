@@ -230,6 +230,27 @@ void Data_handling::output_contact_data(string output_filename, long starting_ti
 	fileOut.close();
 }
 
+//TO-DO: output number of broken/born contacts by comparing previous and current
+void Data_handling::output_contact_data2(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
+	long number_of_broken_contacts = 0; // set to zero for counting
+	long number_of_born_contacts = 0; // set to zero for counting
+	
+	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
+		if (Contact_Matrix[k] < Previous_Contact_Matrix[k]) number_of_broken_contacts++;
+		if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) number_of_born_contacts++;
+	}
+	
+	ofstream fileOut;
+	
+	if (Timestep == initial_timestep) fileOut.open(output_filename.c_str()); // if open first time, truncate file
+	else fileOut.open(output_filename.c_str(), ios::app); // else append to file
+	
+	if (fileOut.good()) fileOut << ((Timestep-starting_timestep)*timestep_length*shear_velocity) << "," << number_of_broken_contacts << "," << number_of_born_contacts << "\n";
+	else cout << "Contact data 2 output file is not good" << "\n";
+	
+	fileOut.close();
+}
+
 // output average number of contacts per atom (2.0*Number_Of_Contacts because we need double counting here)
 void Data_handling::output_average_coordination_number (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
 	ofstream fileOut;

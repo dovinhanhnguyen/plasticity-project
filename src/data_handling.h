@@ -38,6 +38,7 @@ class Data_handling {
 		void compare_contact_matrix(); // compare two matrices; if timestep=1, surely two matrices are equal
 		
 		void output_contact_data(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of broken/born contacts
+		void output_contact_data2 (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); //TO-DO: output number of broken/born contacts by comparing previous and current
 		void output_average_coordination_number (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output average number of contacts per atom
 		void output_contact_points(bool is_output_contact_point, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output files containing position of contact points
 		void output_radius_data(string output_filename); // output atoms radii
