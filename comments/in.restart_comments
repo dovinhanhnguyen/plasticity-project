@@ -1,0 +1,65 @@
+   atom_style     granular              
+   boundary       p f f               
+   newton         off                
+   atom_modify    map array          
+   communicate    single vel yes     
+   units          si                 
+   
+   #####REGION              
+   region         reg block 0. 0.02 0.0 0.04 -0.00065 0.00065  units box                    ##simuation box defined region (nothing can go out)          
+  # create_box     1 reg                                                                ## as I am restarting I do not need to create teh box again
+  
+  read_restart ../DEM/restart/test-filling.restart                                       ##restart file
+  
+   neighbor	0.002 bin                    
+   neigh_modify	delay 0                      
+   
+   ####Material properties         
+   fix            m1 all property/global youngsModulus peratomtype   5.e6
+   fix            m2 all property/global poissonsRatio peratomtype   0.15           
+   fix            m3 all property/global coefficientRestitution peratomtypepair 1 0.7       
+   fix            m4 all property/global coefficientFriction peratomtypepair 1 0.5        
+   
+   ######pair style              
+   pair_style     gran model hertz tangential history   
+   pair_coeff     * *                                   
+   timestep	0.000001                                    
+  
+   fix		1 all nve/sphere                
+   
+  
+   #######computes   
+    compute       55 all reduce max y                                
+   compute        11 all stress/atom pair                      
+   compute		1 all erotate/sphere        
+   variable      high equal c_55                    
+    
+   fix		ts all check/timestep/gran 1000 0.1 0.1              
+   thermo_style	custom step atoms ke     c_55                      
+   thermo		5000                                         
+   thermo_modify	lost ignore norm no                 
+   restart         5000    ../DEM/restart/file1.restart ../DEM/restart/file2.restart       
+   
+      fix            12 all freeze                       ###########
+   velocity       all set 0  0 0 sum no units box          ##  All this is to obtain high of the system to set the moving wall. 
+   set           type 1  omegax 0 omegay 0 omegaz 0       ##   I freeze the particles run 1 timestep to calculate high 
+       run 1                                              ##   remove the constrain of freezing the system and keep going as before
+                                                          ##########
+    unfix 12
+ 
+    ####WAlls     
+    fix             bottom all wall/gran model hertz tangential history primitive type 1  yplane  0
+    fix             moving all wall/gran model hertz tangential history primitive type 1  yplane  ${high}+0.0005  shear  x 0.0001
+   
+    dump               dump_particles all custom 5000 post/dump*.Shear id radius type x y z   vx vy vz fx fy fz omegax omegay omegaz   
+
+   ####running     
+ 
+   fix               2D all setforce NULL NULL 0 
+ 
+   run                400000
+
+   
+   write_restart      restart/second.restart         
+        
+        

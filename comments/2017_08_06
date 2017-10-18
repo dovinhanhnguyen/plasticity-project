@@ -1,0 +1,16 @@
+How to install and use the Pizza.py (or LPP) software package:
+
+Github repository: https://github.com/CFDEMproject/LPP
+
+Installation and running instruction: https://www.cfdem.com/forums/liggghts-installation-guide-ubuntu-1204-lts-and-1304
+
+Install:
+$ sudo apt-get install python-numpy
+$ sudo git clone https://github.com/CFDEMproject/LPP.git $HOME/LPP
+$ gedit ~/.bashrc
+add at the bottom: alias lpp="python $HOME/LPP/src/lpp.py"
+
+Run:
+$ cd ~/Plasticity_Project/post
+$ lpp dump*.Shear
+

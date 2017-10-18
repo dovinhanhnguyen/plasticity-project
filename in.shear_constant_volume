@@ -1,0 +1,61 @@
+   ### Initialization
+   atom_style	granular 	# atoms will have coordinates, velocities, atom IDs, types, and diameter, mass, angular velocity
+   boundary		p f f 		# periodic in x, fixed in y and z
+   newton		off 		# if two particles on different processors, results are not communicated
+   atom_modify	map array 	# processors store lookup table of length equal to number of particles
+   communicate	single vel yes	# set inter-processor communication
+   units		si			# use SI units
+
+   ### Region
+   region		reg block 0.0 0.02 0.0 0.04 -0.00065 0.00065  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
+   read_restart	restart/insert_and_compress.restart	# read restart file
+   neighbor		0.002 bin	# extra_distance_beyond_force_cutoff algorithm_used_to_build_the_neighbor_list
+   neigh_modify	delay 0		# delay 0 step since last build
+
+   ### Material properties
+   fix			m1 all property/global youngsModulus peratomtype   5.e6				# ID group_ID atom_or_global valid_C++_string style args (fix ID=m1, global)
+   fix			m2 all property/global poissonsRatio peratomtype   0.15				# ID group_ID atom_or_global valid_C++_string style args (fix ID=m2, global)
+   fix			m3 all property/global coefficientRestitution peratomtypepair 1 0.5	# ID group_ID atom_or_global valid_C++_string style args (fix ID=m3, global)
+   fix			m4 all property/global coefficientFriction peratomtypepair 1 0.5	# ID group_ID atom_or_global valid_C++_string style args (fix ID=m4, global)
+
+   ### Contact model
+   pair_style	gran model hertz tangential history	# contact model
+   pair_coeff	* *			# default
+   timestep		0.000001	# timestep is 1 microsec
+   fix			1 all nve/sphere	# constant no of particles n; volume v, energy e are regulated; total energy is conserved; temperature t, pressure p are unregulated
+   
+   ### Walls
+   fix			bottom all wall/gran model hertz tangential history primitive type 1 yplane 0	# bound the simulation domain of the granular system with a frictional wall
+
+   ### Computes
+   compute		ymax all reduce max y	# ID group_ID reduce which_attribute arg (take vector and pick out the maximum y as scalar, ID=ymax)
+   compute		11 all stress/atom pair	# ID group_ID stress/atom arg
+   compute		1 all erotate/sphere	# ID group_ID erotate/sphere (compute total rotational KE)
+
+   fix			ts all check/timestep/gran 1000 0.1 0.1	# ID group_ID check/timestep/gran nevery fraction_r fraction_h (estimate Rayleigh-Hertz time every nevery timesteps)
+   thermo_style	custom step atoms ke c_ymax	# print thermo info: timestep, no of atoms, ke, 'compute ymax' to screen and log file
+   thermo		10000						# output thermo info every 10000 timesteps
+   thermo_modify	lost ignore norm no		# ignore lost atoms, don't normalize various thermo info by no of atoms
+   restart		10000 restart/file*.restart	# write restart files every 10000 timesteps, toggle between them
+
+   ### Shearing wall
+   fix			moving all wall/gran model hertz tangential history primitive type 1 yplane 0.016713 shear x 0.0005	# shear wall at y=0.016713 from mesh.vtk, shear velocity=0.0005
+   
+   fix			2D all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D, NULL means do not alter force in that dimension, zero fz every timestep)
+   
+   run 			1										# run 1 timestep and then zero out velocity and angular velocity
+   velocity		all set NULL NULL 0 sum no units box	# set vx vy vz to 0, sum=no means new velocity will replace the old one
+   set			type 1 omegax 0 omegay 0 omegaz 0		# set omegax, omegay, omegaz of all atoms to be zero
+
+   ### Dumps
+   #dump			dump_position_and_radius all custom 10000 post/position_and_radius*.Shear id radius x y z	# dump info to .Shear
+   dump			dump_full_info all custom 10000 post/full_info*.Shear id type radius x y z vx vy vz fx fy fz omegax omegay omegaz	# dump info to .Shear
+
+   ### Shearing particles
+   fix			2D2 all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D2, NULL means do not alter force in that dimension, zero fz every timestep)
+   
+   run			600000000	# run 600000000 timesteps
+
+   write_restart	restart/shear_constant_volume.restart		# write a binary file of the current state of the simulation
+
+

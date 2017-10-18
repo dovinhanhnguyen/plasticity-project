@@ -1,0 +1,4 @@
+Change particle radius distribution from uniform to normal.
+
+Mean	= 5*10^-4 m
+Std		= 5*10^-5 m

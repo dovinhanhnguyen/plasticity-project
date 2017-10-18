@@ -1,0 +1,1 @@
+is_touch() needs to take into account periodic boundary condition

@@ -1,0 +1,8 @@
+Current simulation parameters:
+timestep = 1*10^-6 sec
+nevery = 10000 steps
+shear velocity = 0.0005 ms^-1
+Therefore "every 10000 steps" means the distance delta_x = 0.0005*0.000001*10000 = 5*10^-6m
+
+Today plan: Let's see when the first contact is broken
+
