@@ -18,10 +18,13 @@ class Data_handling {
 		long Current_Number_Of_Contacts; // current number of contacts
 		long Number_Of_Broken_Contacts; // number of broken contacts
 		long Number_Of_Born_Contacts; // number of born contacts
+		long Number_Of_Broken_Contacts2; // number of broken contacts between successive timestep
+		long Number_Of_Born_Contacts2; // number of born contacts between successive timestep
+		long Number_Of_Events; // number of events
 		
 		double *Atoms_Info; // [0]=id1, [1]=radius1, [2]=x1, [3]=y1, [4]=z1, [5]=id2, etc
 		int *Initial_Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
-		int *Previous_Contact_Matrix; //TO-DO: Initial_Contact_Matrix but at the previous timestep
+		int *Previous_Contact_Matrix; // store contact points at the previous timestep
 		int *Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
 		int *Color_Matrix; //TO-DO: to color contact points (idle, born, broken)
 	public:
@@ -38,12 +41,13 @@ class Data_handling {
 		void compare_contact_matrix(); // compare two matrices; if timestep=1, surely two matrices are equal
 		
 		void output_contact_data(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of broken/born contacts
-		void output_contact_data2 (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); //TO-DO: output number of broken/born contacts by comparing previous and current
+		void output_contact_data2 (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of broken/born contacts by comparing previous and current
 		void output_average_coordination_number (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output average number of contacts per atom
 		void output_contact_points(bool is_output_contact_point, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output files containing position of contact points
+		void output_number_of_events(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of events
 		void output_radius_data(string output_filename); // output atoms radii
 		
-		void output_velocity_profile(string output_filename, double ymin, double ymax, long velocity_layers, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); //TO-DO: output velocity profile
+		void output_velocity_profile(string output_filename, double ymin, double ymax, long velocity_layers, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output velocity profile
 		
 		bool is_contact(double atom1_radius, double atom1_x, double atom1_y, double atom1_z,
 						double atom2_radius, double atom2_x, double atom2_y, double atom2_z); // utility function to check if two atoms touch

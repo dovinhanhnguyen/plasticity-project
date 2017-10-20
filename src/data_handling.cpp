@@ -4,6 +4,9 @@
 Data_handling::Data_handling() {
 	Number_Of_Broken_Contacts = 0; // initialise to zero
 	Number_Of_Born_Contacts = 0; // initialise to zero
+	Number_Of_Broken_Contacts2 = 0; // initialise to zero
+	Number_Of_Born_Contacts2 = 0; // initialise to zero
+	Number_Of_Events = 0; // initialise to zero
 	
 	Box_Bounds = new double[7]; // [flag to x,y,z], [xlo], [xhi], [ylo], [yhi], [zlo], [zhi]
 	Box_Bounds[0] = 0; // initialise [flag to x,y,z] to zero
@@ -15,7 +18,7 @@ Data_handling::~Data_handling() {
 	delete[] Box_Bounds;
 	delete[] Atoms_Info;
 	delete[] Initial_Contact_Matrix;
-	delete[] Previous_Contact_Matrix; //TO-DO
+	delete[] Previous_Contact_Matrix;
 	delete[] Contact_Matrix;
 	delete[] Color_Matrix; //TO-DO
 	cout << "Destructor called" << "\n";
@@ -187,8 +190,25 @@ void Data_handling::compare_contact_matrix() {
 		if (Contact_Matrix[k] > Initial_Contact_Matrix[k]) Number_Of_Born_Contacts++;
 	}
 	
+	Number_Of_Broken_Contacts2 = 0; // set to zero for counting
+	Number_Of_Born_Contacts2 = 0; // set to zero for counting
+	
+	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
+		if (Contact_Matrix[k] < Previous_Contact_Matrix[k]) {
+			Number_Of_Broken_Contacts2++;
+			Number_Of_Events++;
+		}
+		if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) {
+			Number_Of_Born_Contacts2++;
+			Number_Of_Events++;
+		}
+	}
+	
 	//cout << "Number_Of_Broken_Contacts is " << Number_Of_Broken_Contacts << "\n";
 	//cout << "Number_Of_Born_Contacts is " << Number_Of_Born_Contacts << "\n";
+	//cout << "Number_Of_Broken_Contacts2 is " << Number_Of_Broken_Contacts2 << "\n";
+	//cout << "Number_Of_Born_Contacts2 is " << Number_Of_Born_Contacts2 << "\n";
+	//cout << "Number_Of_Events is " << Number_Of_Events << "\n";
 }
 
 // utility function to check if two atoms touch
@@ -230,22 +250,14 @@ void Data_handling::output_contact_data(string output_filename, long starting_ti
 	fileOut.close();
 }
 
-//TO-DO: output number of broken/born contacts by comparing previous and current
+// output number of broken/born contacts by comparing previous and current
 void Data_handling::output_contact_data2(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
-	long number_of_broken_contacts = 0; // set to zero for counting
-	long number_of_born_contacts = 0; // set to zero for counting
-	
-	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
-		if (Contact_Matrix[k] < Previous_Contact_Matrix[k]) number_of_broken_contacts++;
-		if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) number_of_born_contacts++;
-	}
-	
 	ofstream fileOut;
 	
 	if (Timestep == initial_timestep) fileOut.open(output_filename.c_str()); // if open first time, truncate file
 	else fileOut.open(output_filename.c_str(), ios::app); // else append to file
 	
-	if (fileOut.good()) fileOut << ((Timestep-starting_timestep)*timestep_length*shear_velocity) << "," << number_of_broken_contacts << "," << number_of_born_contacts << "\n";
+	if (fileOut.good()) fileOut << ((Timestep-starting_timestep)*timestep_length*shear_velocity) << "," << Number_Of_Broken_Contacts2 << "," << Number_Of_Born_Contacts2 << "\n";
 	else cout << "Contact data 2 output file is not good" << "\n";
 	
 	fileOut.close();
@@ -306,6 +318,19 @@ void Data_handling::output_contact_points(bool is_output_contact_point, long sta
 	}
 }
 
+// output number of events
+void Data_handling::output_number_of_events(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
+	ofstream fileOut;
+	
+	if (Timestep == initial_timestep) fileOut.open(output_filename.c_str()); // if open first time, truncate file
+	else fileOut.open(output_filename.c_str(), ios::app); // else append to file
+	
+	if (fileOut.good()) fileOut << ((Timestep-starting_timestep)*timestep_length*shear_velocity) << "," << Number_Of_Events << "\n";
+	else cout << "Number of events data output file is not good" << "\n";
+	
+	fileOut.close();
+}
+
 // output atoms radii
 void Data_handling::output_radius_data(string output_filename) {
 	ofstream fileOut;
@@ -321,7 +346,7 @@ void Data_handling::output_radius_data(string output_filename) {
 	fileOut.close();
 }
 
-//TO-DO: output velocity profile
+// output velocity profile
 void Data_handling::output_velocity_profile(string output_filename, double ymin, double ymax, long velocity_layers, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
 	ofstream fileOut;
 	
@@ -331,7 +356,7 @@ void Data_handling::output_velocity_profile(string output_filename, double ymin,
 	if (fileOut.good()) {
 		fileOut << ((Timestep-starting_timestep)*timestep_length*shear_velocity); // first column write shearing distance
 		
-		//TO-DO: write mean velocity of layers
+		// write mean velocity of layers
 		double velocity_sum_in_each_layer[velocity_layers] = {0}; // declare and initialise to zero
 		long number_of_atoms_in_each_layer[velocity_layers] = {0}; // declare and initialise to zero
 		

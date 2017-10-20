@@ -33,7 +33,7 @@ int main() {
 					}
 				}
 			}
-			dataHandler.output_velocity_profile("../output/raw_data/velocity_profile.csv", dataHandler.Box_Bounds[3], YMAX, VELOCITY_LAYERS, STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY); //TO-DO: do something about velocity
+			dataHandler.output_velocity_profile("../output/raw_data/velocity_profile.csv", dataHandler.Box_Bounds[3], YMAX, VELOCITY_LAYERS, STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
 		}
 		else {
 			cout << "fileIn " << i << " is not good" << "\n";

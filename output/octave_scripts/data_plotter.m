@@ -48,3 +48,15 @@ xlabel('Shear Distance (m)');
 ylabel('Number');
 legend("Broken", "Born");
 print("../number_of_broken_born_contacts2.png");
+
+number_of_events_data = csvread("../raw_data/number_of_events_data.csv");
+figure;
+hold on;
+grid on;
+xlim([min(number_of_events_data(:,1)) max(number_of_events_data(:,1))]); % xlim
+xlim("manual"); % fix xlim
+plot(number_of_events_data(:,1),number_of_events_data(:,2));
+title('Number of events against Shear Distance');
+xlabel('Shear Distance (m)');
+ylabel('Number of Events');
+print("../number_of_events.png");

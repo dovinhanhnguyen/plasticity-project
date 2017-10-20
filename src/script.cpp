@@ -36,9 +36,10 @@ int main() {
 			dataHandler.modify_contact_matrix(INITIAL_TIMESTEP);
 			dataHandler.compare_contact_matrix();
 			dataHandler.output_contact_data("../output/raw_data/contact_data.csv", STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
-			dataHandler.output_contact_data2("../output/raw_data/contact_data2.csv", STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY); //TO-DO
+			dataHandler.output_contact_data2("../output/raw_data/contact_data2.csv", STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
 			dataHandler.output_average_coordination_number("../output/raw_data/average_coordination_number_data.csv", STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
 			dataHandler.output_contact_points(IS_OUTPUT_CONTACT_POINTS, STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
+			dataHandler.output_number_of_events("../output/raw_data/number_of_events_data.csv", STARTING_TIMESTEP, INITIAL_TIMESTEP, TIMESTEP_LENGTH, SHEAR_VELOCITY);
 		}
 		else {
 			cout << "fileIn " << i << " is not good" << "\n";
