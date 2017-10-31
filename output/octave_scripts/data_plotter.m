@@ -1,6 +1,7 @@
 clear;
 graphics_toolkit("gnuplot");
 
+%%% plot radius distribution %%%
 radius_data = csvread("../raw_data/radius_data.csv");
 figure;
 hold on;
@@ -11,6 +12,7 @@ xlabel('Radius (m)');
 ylabel('Number (particles)');
 print("../distribution_of_particle_radius.png");
 
+%%% plot average coordination number %%%
 average_coordination_number_data = csvread("../raw_data/average_coordination_number_data.csv");
 figure;
 hold on;
@@ -23,6 +25,7 @@ xlabel('Shear Distance (m)');
 ylabel('Average Coordination Number');
 print("../average_coordination_number.png");
 
+%%% plot cumulative born/broken contacts %%%
 contact_data = csvread("../raw_data/contact_data.csv");
 figure;
 hold on;
@@ -36,6 +39,7 @@ ylabel('Number');
 legend("Broken", "Born");
 print("../number_of_broken_born_contacts.png");
 
+%%% plot born/broken contacts between successive timesteps  %%%
 contact_data2 = csvread("../raw_data/contact_data2.csv");
 figure;
 hold on;
@@ -49,6 +53,7 @@ ylabel('Number');
 legend("Broken", "Born");
 print("../number_of_broken_born_contacts2.png");
 
+%%% plot cumulative number of events %%%
 number_of_events_data = csvread("../raw_data/number_of_events_data.csv");
 figure;
 hold on;
@@ -56,7 +61,36 @@ grid on;
 xlim([min(number_of_events_data(:,1)) max(number_of_events_data(:,1))]); % xlim
 xlim("manual"); % fix xlim
 plot(number_of_events_data(:,1),number_of_events_data(:,2));
-title('Number of events against Shear Distance');
+title('Cumulative Number of Events against Shear Distance');
 xlabel('Shear Distance (m)');
-ylabel('Number of Events');
-print("../number_of_events.png");
+ylabel('Cumulative Number of Events');
+print("../cumulative_number_of_events.png");
+
+%%% plot velocity profile %%%
+YMAX = 0.016713;
+VELOCITY_LAYERS = 20;
+MEAN_DIAMETER = 0.001;
+
+normalized_layer_height = (YMAX/VELOCITY_LAYERS)/MEAN_DIAMETER;
+
+plotted_data = zeros(VELOCITY_LAYERS,2);
+
+velocity_profile_data = csvread("../raw_data/velocity_profile.csv");
+
+for i = 1:VELOCITY_LAYERS
+	plotted_data(i,1) = (i-0.5)*normalized_layer_height; % first column stores center of layers
+	plotted_data(i,2) = mean(velocity_profile_data(:,(i+1))); % second column stores mean velocity, normalized by mean atom diameter
+endfor
+
+figure;
+hold on;
+%xlim([min(plotted_data(:,2)) max(plotted_data(:,2))]); % xlim
+%xlim("manual"); % fix xlim
+ylim([min(plotted_data(:,1)) max(plotted_data(:,1))]); % ylim
+ylim("manual"); % fix ylim
+plot(plotted_data(:,2),plotted_data(:,1));
+grid on;
+title('Velocity Profile');
+xlabel('Velocity (m/s)');
+ylabel('Height/Mean Diameter (unitless)');
+print("../velocity_profile.png");
