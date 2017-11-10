@@ -14,8 +14,8 @@ using namespace std;
 #define NEVERY 10000 // LIGGGHTS dump file every NEVERY timesteps
 #define SHEAR_VELOCITY 0.0005 // shearing velocity
 
-#define YMAX 0.016713 //TO-DO: position of shearing wall from mesh.vtk
-#define VELOCITY_LAYERS 20 //TO-DO: number of layers to build up velocity profile
+#define YMAX 0.016713 // position of shearing wall from mesh.vtk
+#define VELOCITY_LAYERS 20 // number of layers to build up velocity profile
 
 enum parser_status {IDLE, TIMESTEP, NUMBER_OF_ATOMS, BOX_BOUNDS, ATOMS_INFO};
 
