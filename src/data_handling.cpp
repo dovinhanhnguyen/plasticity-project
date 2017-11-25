@@ -276,6 +276,7 @@ void Data_handling::output_average_coordination_number (string output_filename, 
 	fileOut.close();
 }
 
+/***
 // output files containing position of contact points
 void Data_handling::output_contact_points(bool is_output_contact_point, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
 	if (is_output_contact_point) {
@@ -292,10 +293,9 @@ void Data_handling::output_contact_points(bool is_output_contact_point, long sta
 				for (long j = i+1; j < Number_Of_Atoms; j++) {
 					if (Contact_Matrix[k] == true || Previous_Contact_Matrix[k] == true) { // if two atoms are in contact, either now or one timestep before
 						
-						/*** Uncomment this to print out atoms info
-						cout << Atoms_Info[i*INFO_PER_ATOM+1]<<","<<Atoms_Info[i*INFO_PER_ATOM+2]<<","<<Atoms_Info[i*INFO_PER_ATOM+3]<<","<<Atoms_Info[i*INFO_PER_ATOM+4];
-						cout << Atoms_Info[j*INFO_PER_ATOM+1]<<","<<Atoms_Info[j*INFO_PER_ATOM+2]<<","<<Atoms_Info[j*INFO_PER_ATOM+3]<<","<<Atoms_Info[j*INFO_PER_ATOM+4]<<"\n";
-						***/
+						// Uncomment this to print out atoms info
+						//cout << Atoms_Info[i*INFO_PER_ATOM+1]<<","<<Atoms_Info[i*INFO_PER_ATOM+2]<<","<<Atoms_Info[i*INFO_PER_ATOM+3]<<","<<Atoms_Info[i*INFO_PER_ATOM+4];
+						//cout << Atoms_Info[j*INFO_PER_ATOM+1]<<","<<Atoms_Info[j*INFO_PER_ATOM+2]<<","<<Atoms_Info[j*INFO_PER_ATOM+3]<<","<<Atoms_Info[j*INFO_PER_ATOM+4]<<"\n";
 						
 						// calculate their contact point's coordinates
 						contact_coordinates(contact_x_coord, contact_y_coord, contact_z_coord,
@@ -317,6 +317,7 @@ void Data_handling::output_contact_points(bool is_output_contact_point, long sta
 		fileOut.close();
 	}
 }
+***/
 
 // output number of events
 void Data_handling::output_number_of_events(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity) {
@@ -376,14 +377,13 @@ void Data_handling::output_velocity_profile(string output_filename, double ymin,
 		
 		fileOut << "\n"; // new line
 		
-		/*** Uncomment this to check number of atoms in each layer and sum of them
-		long sum_of_atoms = 0;
-		for (long i = 0; i < velocity_layers; i++) {
-			cout << "Layer " << i << " " << number_of_atoms_in_each_layer[i] << "\n";
-			sum_of_atoms += number_of_atoms_in_each_layer[i];
-		}
-		cout << "Sum " << sum_of_atoms << "\n";
-		***/
+		// Uncomment this to check number of atoms in each layer and sum of them
+		//long sum_of_atoms = 0;
+		//for (long i = 0; i < velocity_layers; i++) {
+		//	cout << "Layer " << i << " " << number_of_atoms_in_each_layer[i] << "\n";
+		//	sum_of_atoms += number_of_atoms_in_each_layer[i];
+		//}
+		//cout << "Sum " << sum_of_atoms << "\n";
 	}
 	else cout << "Velocity profile output file is not good" << "\n";
 	
