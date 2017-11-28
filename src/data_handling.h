@@ -26,7 +26,7 @@ class Data_handling {
 		int *Initial_Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
 		int *Previous_Contact_Matrix; // store contact points at the previous timestep
 		int *Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
-		double *Contact_y_position_Matrix; //TO-DO:
+		int *One_In_Matrix; //TO-DO: at least one atom in a pair is in bulk region
 		int *Color_Matrix; //TO-DO: to color contact points (idle, born, broken)
 	public:
 		double *Box_Bounds; // [flag to x,y,z], [xlo], [xhi], [ylo], [yhi], [zlo], [zhi]
@@ -38,8 +38,8 @@ class Data_handling {
 		void read_number_of_atoms(string file_line, long initial_timestep); // read number of atoms
 		void read_box_bounds(string file_line); // read box dimensions, xlo, xhi, ylo, yhi, zlo, zhi
 		void read_atoms_info(string file_line); // read id, radius, x, y, z
-		void modify_contact_matrix(long initial_timestep); // if first timestep, modify both initial and current contact matrices; if not then modify only current matrix
-		void compare_contact_matrix(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers); //TO-DO: compare two matrices; if timestep=1, surely two matrices are equal
+		void modify_contact_matrix(long initial_timestep, double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers); //TO-DO: if first timestep, modify both initial and current contact matrices; if not then modify only current matrix
+		void compare_contact_matrix(); //TO-DO: compare two matrices; if timestep=1, surely two matrices are equal
 		
 		void output_contact_data(string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of broken/born contacts
 		void output_contact_data2 (string output_filename, long starting_timestep, long initial_timestep, double timestep_length, double shear_velocity); // output number of broken/born contacts by comparing previous and current
@@ -55,7 +55,7 @@ class Data_handling {
 		double contact_coordinates(double &x_coord, double &y_coord, double &z_coord,
 									double atom1_radius, double atom1_x, double atom1_y, double atom1_z,
 									double atom2_radius, double atom2_x, double atom2_y, double atom2_z); // utility function to calculate contact position
-		bool is_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double contact_y_coord); //TO-DO
+		bool is_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double y_coord); //TO-DO
 };
 
 string Output_filename(long filenumber); // return filename in string format
