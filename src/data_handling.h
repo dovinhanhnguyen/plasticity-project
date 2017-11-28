@@ -26,6 +26,7 @@ class Data_handling {
 		int *Initial_Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
 		int *Previous_Contact_Matrix; // store contact points at the previous timestep
 		int *Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
+		double *Contact_y_position_Matrix; //TO-DO:
 		int *Color_Matrix; //TO-DO: to color contact points (idle, born, broken)
 	public:
 		double *Box_Bounds; // [flag to x,y,z], [xlo], [xhi], [ylo], [yhi], [zlo], [zhi]

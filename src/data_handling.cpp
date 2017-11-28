@@ -20,6 +20,7 @@ Data_handling::~Data_handling() {
 	delete[] Initial_Contact_Matrix;
 	delete[] Previous_Contact_Matrix;
 	delete[] Contact_Matrix;
+	delete[] Contact_y_position_Matrix; //TO-DO
 	delete[] Color_Matrix; //TO-DO
 	cout << "Destructor called" << "\n";
 }
@@ -44,6 +45,8 @@ void Data_handling::read_number_of_atoms(string file_line, long initial_timestep
 		Previous_Contact_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO: [0]=atom0_atom1, [1]=atom0_atom2, etc
 		
 		Contact_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; // [0]=atom0_atom1, [1]=atom0_atom2, etc
+		
+		Contact_y_position_Matrix = new double[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO
 		
 		Color_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO: [0]=color of atom0_atom1, [1]=color of atom0_atom2, etc
 		
@@ -176,8 +179,25 @@ void Data_handling::modify_contact_matrix(long initial_timestep) {
 	// count number of current contacts
 	Current_Number_Of_Contacts = 0; // reset to zero
 	for (k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) Current_Number_Of_Contacts = Current_Number_Of_Contacts + Contact_Matrix[k];
-
 	//cout << "Current_Number_Of_Contacts is " << Current_Number_Of_Contacts << "\n";
+	
+	//TO-DO: update Contact_y_position_Matrix;
+	double contact_x_coord = 0.0, contact_y_coord = 0.0, contact_z_coord = 0.0; // variables to store contact point's coordinates
+	k = 0;
+	for (long i = 0; i < (Number_Of_Atoms-1); i++) {
+		for (long j = i+1; j < Number_Of_Atoms; j++) {
+			if (Contact_Matrix[k]) {
+				contact_coordinates(contact_x_coord, contact_y_coord, contact_z_coord,
+									Atoms_Info[i*INFO_PER_ATOM+1], Atoms_Info[i*INFO_PER_ATOM+2], Atoms_Info[i*INFO_PER_ATOM+3], Atoms_Info[i*INFO_PER_ATOM+4],
+									Atoms_Info[j*INFO_PER_ATOM+1], Atoms_Info[j*INFO_PER_ATOM+2], Atoms_Info[j*INFO_PER_ATOM+3], Atoms_Info[j*INFO_PER_ATOM+4]);
+				Contact_y_position_Matrix[k] = contact_y_coord;
+			}
+			else {
+				Contact_y_position_Matrix[k] = 0;
+			}
+			k++;
+		}
+	}
 }
 
 // compare two matrices; if timestep=1, surely two matrices are equal
