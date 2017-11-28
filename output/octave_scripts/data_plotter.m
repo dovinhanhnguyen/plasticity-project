@@ -69,17 +69,18 @@ print("../cumulative_number_of_events.png");
 %%% plot velocity profile %%%
 YMAX = 0.016713;
 VELOCITY_LAYERS = 20;
+NUMBER_OF_CUTOFF_LAYERS = 2;
 MEAN_DIAMETER = 0.001;
 
 normalized_layer_height = (YMAX/VELOCITY_LAYERS)/MEAN_DIAMETER;
 
-plotted_data = zeros(VELOCITY_LAYERS,2);
+plotted_data = zeros(VELOCITY_LAYERS-2*NUMBER_OF_CUTOFF_LAYERS,2);
 
 velocity_profile_data = csvread("../raw_data/velocity_profile.csv");
 
-for i = 1:VELOCITY_LAYERS
-	plotted_data(i,1) = (i-0.5)*normalized_layer_height; % first column stores center of layers
-	plotted_data(i,2) = mean(velocity_profile_data(:,(i+1))); % second column stores mean velocity, normalized by mean atom diameter
+for i = 1:(VELOCITY_LAYERS-2*NUMBER_OF_CUTOFF_LAYERS)
+	plotted_data(i,1) = (i+NUMBER_OF_CUTOFF_LAYERS-0.5)*normalized_layer_height; % first column stores center of layers
+	plotted_data(i,2) = mean(velocity_profile_data(:,(i+NUMBER_OF_CUTOFF_LAYERS+1))); % second column stores mean velocity, normalized by mean atom diameter
 endfor
 
 figure;

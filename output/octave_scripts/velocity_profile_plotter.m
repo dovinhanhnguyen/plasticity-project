@@ -20,7 +20,7 @@ figure;
 for j = 1:(plotting_nevery/NEVERY):(SHEAR_TIMESTEPS/NEVERY+1)
 	for i = 1:(VELOCITY_LAYERS-2*NUMBER_OF_CUTOFF_LAYERS)
 		plotted_data(i,1) = (i+NUMBER_OF_CUTOFF_LAYERS-0.5)*normalized_layer_height; % first column stores center of layers
-		plotted_data(i,2) = mean(velocity_profile_data(1:j,(i+1))); % second column stores mean velocity, normalized by mean atom diameter
+		plotted_data(i,2) = mean(velocity_profile_data(1:j,(i+NUMBER_OF_CUTOFF_LAYERS+1))); % second column stores mean velocity, normalized by mean atom diameter
 	endfor
 	
 	clf;
