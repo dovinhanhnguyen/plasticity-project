@@ -271,12 +271,13 @@ void Data_handling::output_contact_data(string output_filename, long starting_ti
 }
 
 //TO-DO
-bool Data_handling::is_contact_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double contact_y_coord) {
+bool Data_handling::is_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double y_coord) {
+	cout << "Called" << endl;
 	double layer_height = (ymax-ymin)/velocity_layers;
 	double lower_bound = number_of_cutoff_layers*layer_height;
 	double upper_bound = (velocity_layers-number_of_cutoff_layers)*layer_height;
-	//cout << "is_in_bulk " << lower_bound << " < " << contact_y_coord << " < " << upper_bound << " ? " << ((lower_bound < contact_y_coord) && (contact_y_coord < upper_bound)) << endl;
-	if ((lower_bound < contact_y_coord) && (contact_y_coord < upper_bound)) return true;
+	//cout << "is_in_bulk " << lower_bound << " < " << y_coord << " < " << upper_bound << " ? " << ((lower_bound < y_coord) && (y_coord < upper_bound)) << endl;
+	if ((lower_bound < y_coord) && (y_coord < upper_bound)) return true;
 	else return false;
 }
 

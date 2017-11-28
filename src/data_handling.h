@@ -55,7 +55,7 @@ class Data_handling {
 		double contact_coordinates(double &x_coord, double &y_coord, double &z_coord,
 									double atom1_radius, double atom1_x, double atom1_y, double atom1_z,
 									double atom2_radius, double atom2_x, double atom2_y, double atom2_z); // utility function to calculate contact position
-		bool is_contact_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double contact_y_coord); //TO-DO
+		bool is_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double contact_y_coord); //TO-DO
 };
 
 string Output_filename(long filenumber); // return filename in string format
