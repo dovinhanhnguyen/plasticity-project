@@ -366,7 +366,6 @@ void Data_handling::output_velocity_profile(string output_filename, double ymin,
 		
 		for (long i = 0; i < Number_Of_Atoms; i++) {
 			layer_index = (long)((Atoms_Info[i*INFO_PER_ATOM+3])/(layer_height));
-			cout << layer_index << endl;
 			
 			velocity_sum_in_each_layer[layer_index] += Atoms_Info[i*INFO_PER_ATOM+5];
 			number_of_atoms_in_each_layer[layer_index]++;
