@@ -26,7 +26,7 @@ class Data_handling {
 		int *Initial_Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
 		int *Previous_Contact_Matrix; // store contact points at the previous timestep
 		int *Contact_Matrix; // [0]=atom0_atom1, [1]=atom0_atom2, etc
-		int *One_In_Matrix; //TO-DO: at least one atom in a pair is in bulk region
+		int *Two_In_Matrix; //TO-DO: both atoms in a pair are in bulk region
 		int *Color_Matrix; //TO-DO: to color contact points (idle, born, broken)
 	public:
 		double *Box_Bounds; // [flag to x,y,z], [xlo], [xhi], [ylo], [yhi], [zlo], [zhi]

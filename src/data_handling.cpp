@@ -20,7 +20,7 @@ Data_handling::~Data_handling() {
 	delete[] Initial_Contact_Matrix;
 	delete[] Previous_Contact_Matrix;
 	delete[] Contact_Matrix;
-	delete[] One_In_Matrix; //TO-DO
+	delete[] Two_In_Matrix; //TO-DO
 	delete[] Color_Matrix; //TO-DO
 	cout << "Destructor called" << "\n";
 }
@@ -46,7 +46,7 @@ void Data_handling::read_number_of_atoms(string file_line, long initial_timestep
 		
 		Contact_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; // [0]=atom0_atom1, [1]=atom0_atom2, etc
 		
-		One_In_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO
+		Two_In_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO
 		
 		Color_Matrix = new int[Number_Of_Atoms*(Number_Of_Atoms-1)/2]; //TO-DO: [0]=color of atom0_atom1, [1]=color of atom0_atom2, etc
 		
@@ -181,16 +181,15 @@ void Data_handling::modify_contact_matrix(long initial_timestep, double ymin, do
 	for (k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) Current_Number_Of_Contacts = Current_Number_Of_Contacts + Contact_Matrix[k];
 	//cout << "Current_Number_Of_Contacts is " << Current_Number_Of_Contacts << "\n";
 	
-	//TO-DO: update One_In_Matrix;
-	double contact_x_coord = 0.0, contact_y_coord = 0.0, contact_z_coord = 0.0; // variables to store contact point's coordinates
+	//TO-DO: update Two_In_Matrix
 	k = 0;
 	for (long i = 0; i < (Number_Of_Atoms-1); i++) {
 		for (long j = i+1; j < Number_Of_Atoms; j++) {
-			if ((is_in_bulk_region(ymin, ymax, velocity_layers, number_of_cutoff_layers, Atoms_Info[i*INFO_PER_ATOM+3])) || (is_in_bulk_region(ymin, ymax, velocity_layers, number_of_cutoff_layers, Atoms_Info[j*INFO_PER_ATOM+3]))) {
-				One_In_Matrix[k] = 1;
+			if ((is_in_bulk_region(ymin, ymax, velocity_layers, number_of_cutoff_layers, Atoms_Info[i*INFO_PER_ATOM+3])) && (is_in_bulk_region(ymin, ymax, velocity_layers, number_of_cutoff_layers, Atoms_Info[j*INFO_PER_ATOM+3]))) {
+				Two_In_Matrix[k] = 1;
 			}
 			else {
-				One_In_Matrix[k] = 0;
+				Two_In_Matrix[k] = 0;
 			}
 			k++;
 		}
@@ -203,21 +202,25 @@ void Data_handling::compare_contact_matrix() {
 	Number_Of_Born_Contacts = 0; // set to zero for counting
 	
 	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
-		if (Contact_Matrix[k] < Initial_Contact_Matrix[k]) Number_Of_Broken_Contacts++;
-		else if (Contact_Matrix[k] > Initial_Contact_Matrix[k]) Number_Of_Born_Contacts++;
+		if (Two_In_Matrix[k]) {
+			if (Contact_Matrix[k] < Initial_Contact_Matrix[k]) Number_Of_Broken_Contacts++;
+			else if (Contact_Matrix[k] > Initial_Contact_Matrix[k]) Number_Of_Born_Contacts++;
+		}
 	}
 	
 	Number_Of_Broken_Contacts2 = 0; // set to zero for counting
 	Number_Of_Born_Contacts2 = 0; // set to zero for counting
 	
 	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
-		if (Contact_Matrix[k] < Previous_Contact_Matrix[k]) {
-			Number_Of_Broken_Contacts2++;
-			Number_Of_Events++;
-		}
-		else if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) {
-			Number_Of_Born_Contacts2++;
-			Number_Of_Events++;
+		if (Two_In_Matrix[k]) {
+			if (Contact_Matrix[k] < Previous_Contact_Matrix[k]) {
+				Number_Of_Broken_Contacts2++;
+				Number_Of_Events++;
+			}
+			else if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) {
+				Number_Of_Born_Contacts2++;
+				Number_Of_Events++;
+			}
 		}
 	}
 	
@@ -269,7 +272,6 @@ void Data_handling::output_contact_data(string output_filename, long starting_ti
 
 //TO-DO
 bool Data_handling::is_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double y_coord) {
-	cout << "Called" << endl;
 	double layer_height = (ymax-ymin)/velocity_layers;
 	double lower_bound = number_of_cutoff_layers*layer_height;
 	double upper_bound = (velocity_layers-number_of_cutoff_layers)*layer_height;
