@@ -69,7 +69,7 @@ print("../cumulative_number_of_events.png");
 %%% plot velocity profile %%%
 YMAX = 0.016713;
 VELOCITY_LAYERS = 20;
-NUMBER_OF_CUTOFF_LAYERS = 0;
+NUMBER_OF_CUTOFF_LAYERS = 2;
 MEAN_DIAMETER = 0.001;
 
 normalized_layer_height = (YMAX/VELOCITY_LAYERS)/MEAN_DIAMETER;
