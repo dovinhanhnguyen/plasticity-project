@@ -201,13 +201,13 @@ void Data_handling::modify_contact_matrix(long initial_timestep) {
 }
 
 // compare two matrices; if timestep=1, surely two matrices are equal
-void Data_handling::compare_contact_matrix() {
+void Data_handling::compare_contact_matrix(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers) {
 	Number_Of_Broken_Contacts = 0; // set to zero for counting
 	Number_Of_Born_Contacts = 0; // set to zero for counting
 	
 	for (long k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
 		if (Contact_Matrix[k] < Initial_Contact_Matrix[k]) Number_Of_Broken_Contacts++;
-		if (Contact_Matrix[k] > Initial_Contact_Matrix[k]) Number_Of_Born_Contacts++;
+		else if (Contact_Matrix[k] > Initial_Contact_Matrix[k]) Number_Of_Born_Contacts++;
 	}
 	
 	Number_Of_Broken_Contacts2 = 0; // set to zero for counting
@@ -218,7 +218,7 @@ void Data_handling::compare_contact_matrix() {
 			Number_Of_Broken_Contacts2++;
 			Number_Of_Events++;
 		}
-		if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) {
+		else if (Contact_Matrix[k] > Previous_Contact_Matrix[k]) {
 			Number_Of_Born_Contacts2++;
 			Number_Of_Events++;
 		}
@@ -268,6 +268,16 @@ void Data_handling::output_contact_data(string output_filename, long starting_ti
 	else cout << "Contact data output file is not good" << "\n";
 	
 	fileOut.close();
+}
+
+//TO-DO
+bool Data_handling::is_contact_in_bulk_region(double ymin, double ymax, long velocity_layers, long number_of_cutoff_layers, double contact_y_coord) {
+	double layer_height = (ymax-ymin)/velocity_layers;
+	double lower_bound = number_of_cutoff_layers*layer_height;
+	double upper_bound = (velocity_layers-number_of_cutoff_layers)*layer_height;
+	//cout << "is_in_bulk " << lower_bound << " < " << contact_y_coord << " < " << upper_bound << " ? " << ((lower_bound < contact_y_coord) && (contact_y_coord < upper_bound)) << endl;
+	if ((lower_bound < contact_y_coord) && (contact_y_coord < upper_bound)) return true;
+	else return false;
 }
 
 // output number of broken/born contacts by comparing previous and current
