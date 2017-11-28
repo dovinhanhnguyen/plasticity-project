@@ -3,7 +3,7 @@ graphics_toolkit("gnuplot");
 
 YMAX = 0.016713;
 VELOCITY_LAYERS = 20;
-NUMBER_OF_CUTOFF_LAYERS = 2;
+NUMBER_OF_CUTOFF_LAYERS = 0;
 MEAN_DIAMETER = 0.001;
 normalized_layer_height = (YMAX/VELOCITY_LAYERS)/MEAN_DIAMETER;
 

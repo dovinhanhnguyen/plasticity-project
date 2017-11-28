@@ -18,7 +18,7 @@ using namespace std;
 
 #define YMAX 0.016713 // position of shearing wall from mesh.vtk
 #define VELOCITY_LAYERS 20 // number of layers in velocity profile
-#define NUMBER_OF_CUTOFF_LAYERS 2 //TO-DO: number of layers from top/bottom to be discarded
+#define NUMBER_OF_CUTOFF_LAYERS 0 //TO-DO: number of layers from top/bottom to be discarded
 
 enum parser_status {IDLE, TIMESTEP, NUMBER_OF_ATOMS, BOX_BOUNDS, ATOMS_INFO};
 

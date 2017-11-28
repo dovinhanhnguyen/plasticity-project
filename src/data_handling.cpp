@@ -176,11 +176,6 @@ void Data_handling::modify_contact_matrix(long initial_timestep, double ymin, do
 		}
 	}
 	
-	// count number of current contacts
-	Current_Number_Of_Contacts = 0; // reset to zero
-	for (k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) Current_Number_Of_Contacts = Current_Number_Of_Contacts + Contact_Matrix[k];
-	//cout << "Current_Number_Of_Contacts is " << Current_Number_Of_Contacts << "\n";
-	
 	//TO-DO: update Two_In_Matrix
 	k = 0;
 	for (long i = 0; i < (Number_Of_Atoms-1); i++) {
@@ -194,6 +189,13 @@ void Data_handling::modify_contact_matrix(long initial_timestep, double ymin, do
 			k++;
 		}
 	}
+	
+	// count number of current contacts
+	Current_Number_Of_Contacts = 0; // reset to zero
+	for (k = 0; k < (Number_Of_Atoms*(Number_Of_Atoms-1)/2); k++) {
+		if (Two_In_Matrix[k]) Current_Number_Of_Contacts = Current_Number_Of_Contacts + Contact_Matrix[k];
+	}
+	//cout << "Current_Number_Of_Contacts is " << Current_Number_Of_Contacts << "\n";
 }
 
 // compare two matrices; if timestep=1, surely two matrices are equal
