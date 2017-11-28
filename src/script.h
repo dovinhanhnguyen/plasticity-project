@@ -16,6 +16,9 @@ using namespace std;
 
 #define IS_OUTPUT_CONTACT_POINTS 0 // whether to output position of contact points or not
 
+#define YMAX 0.016713 // position of shearing wall from mesh.vtk
+#define VELOCITY_LAYERS 20 // number of layers in velocity profile
+
 enum parser_status {IDLE, TIMESTEP, NUMBER_OF_ATOMS, BOX_BOUNDS, ATOMS_INFO};
 
 Data_handling dataHandler;
