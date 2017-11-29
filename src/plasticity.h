@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "data_handling.h"
 using namespace std;
 
 #define TIMESTEP_LENGTH 0.000001 // seconds per timestep
@@ -20,7 +19,7 @@ using namespace std;
 
 enum parser_status {IDLE, TIMESTEP, NUMBER_OF_ATOMS, BOX_BOUNDS, ATOMS_INFO};
 
-Data_handling dataHandler;
+//Data_handling dataHandler;
 
 string Filename(long filenumber); // return filename in string format
 
