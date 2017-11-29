@@ -8,7 +8,7 @@
 
    ### Region
    region		reg block 0.0 0.02 0.0 0.04 -0.00065 0.00065  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
-   read_restart	restart/file400500000.restart	#TO-DO: read restart file corresponding to first timestep in backward shear
+   read_restart	restart/file400700000.restart	#TO-DO: read restart file corresponding to first timestep in backward shear
    neighbor		0.002 bin	# extra_distance_beyond_force_cutoff algorithm_used_to_build_the_neighbor_list
    neigh_modify	delay 0		# delay 0 step since last build
 
