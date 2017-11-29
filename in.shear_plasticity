@@ -8,7 +8,7 @@
 
    ### Region
    region		reg block 0.0 0.02 0.0 0.04 -0.00065 0.00065  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
-   read_restart	restart_long/file300500000.restart	#TO-DO: read restart file corresponds to 0.15m
+   read_restart	restart/file400500000.restart	#TO-DO: read restart file corresponding to first timestep in backward shear
    neighbor		0.002 bin	# extra_distance_beyond_force_cutoff algorithm_used_to_build_the_neighbor_list
    neigh_modify	delay 0		# delay 0 step since last build
 
@@ -36,20 +36,22 @@
    thermo_style	custom step atoms ke c_ymax	# print thermo info: timestep, no of atoms, ke, 'compute ymax' to screen and log file
    thermo		10000							# output thermo info every 1 timestep
    thermo_modify	lost ignore norm no		# ignore lost atoms, don't normalize various thermo info by no of atoms
-   restart		10000 restart/file*.restart		# write restart files every 1 timestep
+   restart		10000 restart_back/file*.restart		# write restart files every 10000 timesteps
 
    ### Shearing wall
-   fix			moving all wall/gran model hertz tangential history primitive type 1 yplane 0.016681 shear x 0.0005	# shear wall at y=0.016681 from mesh.vtk, shear velocity=0.0005
+   fix			moving all wall/gran model hertz tangential history primitive type 1 yplane 0.016713 shear x -0.0005	# shear wall at y=0.016713 from mesh.vtk, shear velocity=-0.0005
    
    fix			2D all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D, NULL means do not alter force in that dimension, zero fz every timestep)
 
    ### Dumps
    #dump			dump_position_and_radius all custom 10000 post/position_and_radius*.Shear id radius x y z	# dump info to .Shear
-   dump			dump_full_info all custom 10000 post/full_info*.Shear id type radius x y z vx vy vz fx fy fz omegax omegay omegaz	# dump info to .Shear
+   dump			dump_full_info all custom 10000 post_back/full_info*.Shear id type radius x y z vx vy vz fx fy fz omegax omegay omegaz	# dump info to .Shear
 
    ### Shearing particles
-   run			1000000	# run 1000000 timesteps
+   fix			2D2 all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D2, NULL means do not alter force in that dimension, zero fz every timestep)
+   
+   run			200000	# run 200000 timesteps
 
-   write_restart	restart/shear_plasticity.restart		# write a binary file of the current state of the simulation
+   write_restart	restart_back/shear_plasticity.restart		# write a binary file of the current state of the simulation
 
 
