@@ -9,8 +9,8 @@ using namespace std;
 
 #define TIMESTEP_LENGTH 0.000001 // seconds per timestep
 #define STARTING_TIMESTEP 500000 // timestep when shearing begins
-#define	INITIAL_TIMESTEP 400500000 // first timestep to look at
-#define SHEAR_TIMESTEPS 200000 // number of timesteps of shearing
+#define	INITIAL_TIMESTEP 500000 // first timestep to look at
+#define SHEAR_TIMESTEPS 600000000 // number of timesteps of shearing
 #define NEVERY 10000 // LIGGGHTS dump file every NEVERY timesteps
 #define SHEAR_VELOCITY 0.0005 // shearing velocity
 
