@@ -1,15 +1,15 @@
 CC = g++
 CCSW = -O3 -Wno-deprecated-declarations
 
-plasticity: plasticity.o
-	$(CC) -o plasticity plasticity.o ${CCSW}
+data_analysis: main.o
+	$(CC) -o data_analysis main.o ${CCSW}
 
-plasticity.o: plasticity.cpp plasticity.h
+main.o: main.cpp main.h
 
 .cpp.o:
 	$(CC) ${CCSW} -c $<
 
 clean:
-	echo cleaning up; /bin/rm -f core *.o plasticity
+	echo cleaning up; /bin/rm -f core *.o data_analysis
 
-all:	plasticity
+all:	data_analysis
