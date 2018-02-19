@@ -2,7 +2,9 @@
 #define __MAIN_INCLUDED__
 
 #include <iostream>
+#include <string>
 
 #include "experiment.h"
+#include "display.h"
 
 #endif

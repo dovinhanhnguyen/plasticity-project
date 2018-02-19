@@ -4,7 +4,7 @@ CCSW = -O3 -Wno-deprecated-declarations
 data_analysis: main.o experiment.o
 	$(CC) -o data_analysis main.o experiment.o ${CCSW}
 
-main.o: main.cpp main.h
+main.o: main.cpp main.h display.h
 
 experiment.o: experiment.cpp experiment.h
 
