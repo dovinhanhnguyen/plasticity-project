@@ -1,32 +1,34 @@
 #include "main.h"
 
 int main() {
-	Experiment exp;
-	exp.print_experiment_parameters();
+	//~ Experiment exp;
+	//~ exp.print_experiment_parameters();
 	
 	bool flag = false;
 	while (flag == false) {
-		print_manual();
+		screen_manual();
 		
 		std::string input;
 		getline(std::cin, input);
 		
 		if (input == "0") {
-			std::cout << "\n" << "Exit" << "\n";
+			screen_0_exit();
 			flag = true;
 		}
 		else if (input == "1") {
-			std::cout << "\n" << "Atoms Radius, r" << "\n";
+			screen_1_atoms_radius();
 			
-			// function to analyse r
+			Atom_radius atom_radius_analysis;
+			atom_radius_analysis.analyse();
+			atom_radius_analysis.output();
 		}
 		else if (input == "2") {
-			std::cout << "\n" << "Average Coordination Number, <Z>" << "\n";
+			screen_2_average_coordination_number();
 			
 			// function to analyse <z>
 		}
 		else {
-			std::cout << "\n" << "Invalid" << "\n";
+			screen_invalid();
 		}
 	}
 }

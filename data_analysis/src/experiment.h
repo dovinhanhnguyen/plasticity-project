@@ -4,16 +4,20 @@
 // To set parameters, go to experiment.cpp
 
 #include <iostream>
+#include <string>
 
 // base class containing basic parameters of the experiment
 class Experiment {
 
 protected:
-	double TIMESTEP_LENGTH;
-	long STARTING_TIMESTEP;
-	long NEVERY;
-	double SHEAR_VELOCITY;
-	double YMAX;
+	double mTIMESTEP_LENGTH;
+	long mSTARTING_TIMESTEP;
+	long mNEVERY;
+	double mSHEAR_VELOCITY;
+	double mYMAX;
+	std::string mPATH_TO_EXPERIMENT;
+	std::string mPATH_TO_FORWARD;
+	std::string mPATH_TO_BACKWARD;
 
 public:
 	Experiment();

@@ -6,5 +6,6 @@
 
 #include "experiment.h"
 #include "display.h"
+#include "atom_radius.h"
 
 #endif
