@@ -7,7 +7,7 @@
    units		si			# use SI units
 
    ### Region
-   region		reg block 0.0 0.02 0.0 0.04 -0.00065 0.00065  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
+   region		reg block 0.0 0.02 0.0 0.04 -0.0006 0.0006  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
    create_box	1 reg		# number_of_atom_styles_used region_ID
    neighbor		0.002 bin	# extra_distance_beyond_force_cutoff algorithm_used_to_build_the_neighbor_list
    neigh_modify	delay 0		# delay 0 step since last build
@@ -54,9 +54,9 @@
 
    fix			ts all check/timestep/gran 1000 0.1 0.1	# ID group_ID check/timestep/gran nevery fraction_r fraction_h (estimate Rayleigh-Hertz time every nevery timesteps)
    thermo_style	custom step atoms ke c_ymax	# print thermo info: timestep, no of atoms, ke, 'compute ymax' to screen and log file
-   thermo		5000						# output thermo info every 5000 timesteps
+   thermo		10000						# output thermo info every 5000 timesteps
    thermo_modify	lost ignore norm no		# ignore lost atoms, don't normalize various thermo info by no of atoms
-   restart		5000 restart/file1.restart restart/file2.restart	# write 2 restart files every 5000 timesteps, toggle between them
+   restart		10000 restart/file1.restart restart/file2.restart	# write 2 restart files every 5000 timesteps, toggle between them
 
    ### Insert particles
    run			1	# run 1 timestep to insert particles
@@ -68,9 +68,7 @@
    fix			granwalls all wall/gran model hertz tangential history mesh n_meshes 1 meshes mesh_top	# ... mesh no_of_meshes value meshes mesh_ID (ID=mesh_top)
 
    ### Dumps
-   #dump			dump_position_and_radius all custom 10000 post/position_and_radius*.Shear id radius x y z	# dump info to .Shear
-   dump			dump_full_info all custom 10000 post/full_info*.Shear id type radius x y z vx vy vz fx fy fz omegax omegay omegaz	# dump info to .Shear
-   #dump			dump_particles all custom/vtk 1000 post/filling_dump_*.vtk id type radius x y z   vx vy vz fx fy fz omegax omegay omegaz   
+   dump			dump_particles all custom/vtk 10000 post/filling*.vtk id type radius x y z vx vy vz fx fy fz omegax omegay omegaz
    dump			dumps_meshes all mesh/gran/VTK 10000 post/mesh*.vtk stress mesh_top	# dump mesh info every 10000 timesteps
 
    ### Compress particles

@@ -7,7 +7,7 @@
    units		si			# use SI units
 
    ### Region
-   region		reg block 0.0 0.02 0.0 0.04 -0.00065 0.00065  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
+   region		reg block 0.0 0.02 0.0 0.04 -0.0006 0.0006  units box	# ID style xlo xhi ylo yhi zlo zhi keyword arg (region ID=reg, units defined by the units command)
    read_restart	restart/insert_and_compress.restart	# read restart file
    neighbor		0.002 bin	# extra_distance_beyond_force_cutoff algorithm_used_to_build_the_neighbor_list
    neigh_modify	delay 0		# delay 0 step since last build
@@ -39,7 +39,7 @@
    restart		10000 restart/file*.restart	# write restart files every 10000 timesteps, toggle between them
 
    ### Shearing wall
-   fix			moving all wall/gran model hertz tangential history primitive type 1 yplane 0.016713 shear x 0.0005	# shear wall at y=0.016713 from mesh.vtk, shear velocity=0.0005
+   fix			moving all wall/gran model hertz tangential history primitive type 1 yplane 0.016720 shear x 0.0005	# shear wall at y=0.016720 from mesh.vtk, shear velocity=0.0005
    
    fix			2D all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D, NULL means do not alter force in that dimension, zero fz every timestep)
    
@@ -48,13 +48,12 @@
    set			type 1 omegax 0 omegay 0 omegaz 0		# set omegax, omegay, omegaz of all atoms to be zero
 
    ### Dumps
-   #dump			dump_position_and_radius all custom 10000 post/position_and_radius*.Shear id radius x y z	# dump info to .Shear
-   dump			dump_full_info all custom 10000 post/full_info*.Shear id type radius x y z vx vy vz fx fy fz omegax omegay omegaz	# dump info to .Shear
+   dump			dump_particles all custom/vtk 10000 post/shearing*.vtk id type radius x y z vx vy vz fx fy fz omegax omegay omegaz
 
    ### Shearing particles
    fix			2D2 all setforce NULL NULL 0	# ID group_ID setforce fx fy fz (ID=2D2, NULL means do not alter force in that dimension, zero fz every timestep)
    
-   run			600000000	# run 600000000 timesteps
+   run			50000000	# run 50000000 timesteps
 
    write_restart	restart/shear_constant_volume.restart		# write a binary file of the current state of the simulation
 
